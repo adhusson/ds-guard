@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pragma solidity >=0.4.23;
+pragma solidity >=0.6.12;
 
 import "ds-auth/auth.sol";
 
@@ -34,13 +34,13 @@ contract DSGuardEvents {
 }
 
 contract DSGuard is DSAuth, DSAuthority, DSGuardEvents {
-    bytes32 constant public ANY = bytes32(uint(-1));
+    bytes32 constant public ANY = bytes32(type(uint).max);
 
     mapping (bytes32 => mapping (bytes32 => mapping (bytes32 => bool))) acl;
 
     function canCall(
         address src_, address dst_, bytes4 sig
-    ) public view returns (bool) {
+    ) public override view returns (bool) {
         bytes32 src = bytes32(bytes20(src_));
         bytes32 dst = bytes32(bytes20(dst_));
 
